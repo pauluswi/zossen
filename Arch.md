@@ -1,9 +1,8 @@
-   
 
-    ┌──────────────────────────┐
-    │ Bielefeld Backoffice UI  │
-    │ (Ops / Approvals / Audit)│
-    └────────────┬─────────────┘
+    ┌──────────────────────────┐       ┌──────────────────────────┐
+    │ Bielefeld Backoffice UI  │ <───> │ Mock IdP (Keycloak)      │
+    │ (Ops / Approvals / Audit)│       │ (Auth / Tokens)          │
+    └────────────┬─────────────┘       └──────────────────────────┘
                  │ OAuth2 (User)
     ┌────────────▼─────────────┐
     │ Backend API              │

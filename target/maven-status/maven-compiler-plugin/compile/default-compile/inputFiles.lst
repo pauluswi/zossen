@@ -9,6 +9,7 @@
 /Users/slametwidodo/IdeaProjects/zossen/src/main/java/com/pswied/zossen/ztrust/security/RbacEvaluator.java
 /Users/slametwidodo/IdeaProjects/zossen/src/main/java/com/pswied/zossen/mockidp/jwt/JwtTokenGenerator.java
 /Users/slametwidodo/IdeaProjects/zossen/src/main/java/com/pswied/zossen/mockidp/controller/MockTokenController.java
+/Users/slametwidodo/IdeaProjects/zossen/src/main/java/com/pswied/zossen/exception/GlobalExceptionHandler.java
 /Users/slametwidodo/IdeaProjects/zossen/src/main/java/com/pswied/zossen/ztrust/gateway/ZTrustSecurityGateway.java
 /Users/slametwidodo/IdeaProjects/zossen/src/main/java/com/pswied/zossen/ztrust/audit/AuditService.java
 /Users/slametwidodo/IdeaProjects/zossen/src/main/java/com/pswied/zossen/ztrust/security/CorrelationIdFilter.java

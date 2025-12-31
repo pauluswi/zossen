@@ -1,5 +1,6 @@
 com/pswied/zossen/mockidp/controller/MockTokenController.class
 com/pswied/zossen/ztrust/security/CorrelationIdFilter.class
+com/pswied/zossen/exception/GlobalExceptionHandler.class
 com/pswied/zossen/security/SecurityConfig.class
 com/pswied/zossen/Application.class
 com/pswied/zossen/security/JwtClaimMapper.class

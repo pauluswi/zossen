@@ -27,7 +27,7 @@ class ZossenApplicationTests {
         String token = tokenGenerator.generateToken("admin", List.of("ROLE_ADMIN"));
 
         mockMvc.perform(post("/backoffice/approve")
-                        .param("transactionId", "TX-SUCCESS-ADMIN")
+                        .param("transactionId", "025093000001")
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk());
     }
@@ -37,7 +37,7 @@ class ZossenApplicationTests {
         String token = tokenGenerator.generateToken("supervisor", List.of("ROLE_SUPERVISOR"));
 
         mockMvc.perform(post("/backoffice/approve")
-                        .param("transactionId", "TX-SUCCESS-SUPERVISOR")
+                        .param("transactionId", "025093000002")
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk());
     }
@@ -47,7 +47,7 @@ class ZossenApplicationTests {
         String token = tokenGenerator.generateToken("user", List.of("ROLE_USER"));
 
         mockMvc.perform(post("/backoffice/approve")
-                        .param("transactionId", "TX-FAIL")
+                        .param("transactionId", "025093000003")
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isForbidden());
     }
@@ -55,7 +55,7 @@ class ZossenApplicationTests {
     @Test
     void approveTransaction_withoutToken_shouldFailWith401() throws Exception {
         mockMvc.perform(post("/backoffice/approve")
-                        .param("transactionId", "TX-UNAUTH"))
+                        .param("transactionId", "025093000004"))
                 .andExpect(status().isUnauthorized());
     }
 }

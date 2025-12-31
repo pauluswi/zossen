@@ -4,7 +4,7 @@ This document provides `curl` commands to manually test the security endpoints o
 
 ## Scenario 1: Happy Path (Successful Approval)
 
-This test simulates a user with the correct permissions (`ROLE_APPROVER`) successfully approving a transaction.
+This test simulates a user with the correct permissions (`ROLE_ADMIN` or `ROLE_SUPERVISOR`) successfully approving a transaction.
 
 ### Test Script
 
@@ -15,7 +15,7 @@ This script automates the two-step process:
 ```sh
 #!/bin/bash
 
-# --- Step 1: Get an access token for a user with the 'ROLE_APPROVER' role ---
+# --- Step 1: Get an access token for a user with the 'ROLE_ADMIN' role ---
 echo "🔑 Requesting token for 'admin' user..."
 
 TOKEN=$(curl -s -X POST "http://localhost:8080/mock-idp/token?username=admin" | jq -r .access_token)
@@ -31,7 +31,8 @@ echo ""
 # --- Step 2: Use the token to call the protected approval endpoint ---
 echo "🚀 Making authorized request to /backoffice/approve..."
 
-curl -i -X POST "http://localhost:8080/backoffice/approve?transactionId=TX-HAPPY-789" \
+# Using a realistic 12-digit transaction ID (e.g., 025093000001)
+curl -i -X POST "http://localhost:8080/backoffice/approve?transactionId=025093000001" \
 -H "Authorization: Bearer $TOKEN"
 
 echo ""
@@ -57,7 +58,7 @@ Content-Security-Policy: script-src 'self'; object-src 'none';
 Content-Type: application/json
 ...
 
-{"status":"SUCCESS","message":"Transaction approved and executed securely","transactionId":"TX-HAPPY-789"}
+{"status":"SUCCESS","message":"Transaction approved and executed securely","transactionId":"025093000001"}
 ```
 
 #### Explanation

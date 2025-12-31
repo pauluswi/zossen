@@ -23,11 +23,21 @@ class ZossenApplicationTests {
     private JwtTokenGenerator tokenGenerator;
 
     @Test
-    void approveTransaction_withApproverRole_shouldSucceed() throws Exception {
-        String token = tokenGenerator.generateToken("admin", List.of("ROLE_APPROVER"));
+    void approveTransaction_withAdminRole_shouldSucceed() throws Exception {
+        String token = tokenGenerator.generateToken("admin", List.of("ROLE_ADMIN"));
 
         mockMvc.perform(post("/backoffice/approve")
-                        .param("transactionId", "TX-SUCCESS")
+                        .param("transactionId", "TX-SUCCESS-ADMIN")
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void approveTransaction_withSupervisorRole_shouldSucceed() throws Exception {
+        String token = tokenGenerator.generateToken("supervisor", List.of("ROLE_SUPERVISOR"));
+
+        mockMvc.perform(post("/backoffice/approve")
+                        .param("transactionId", "TX-SUCCESS-SUPERVISOR")
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk());
     }

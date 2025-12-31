@@ -6,6 +6,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 /**
  * The Policy Enforcement Point (PEP).
  * All high-risk requests MUST pass through this gateway.
@@ -16,6 +19,7 @@ public class ZTrustSecurityGateway {
 
     private final SecureTransactionService transactionService;
     private final AuditService auditService;
+    private static final Set<String> REQUIRED_ROLES = Set.of("ROLE_ADMIN", "ROLE_SUPERVISOR");
 
     public ZTrustSecurityGateway(SecureTransactionService transactionService, AuditService auditService) {
         this.transactionService = transactionService;
@@ -28,11 +32,13 @@ public class ZTrustSecurityGateway {
 
         // 1. Enforce RBAC (Role-Based Access Control)
         boolean hasAuthority = auth.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_APPROVER"));
+                .map(Object::toString)
+                .anyMatch(REQUIRED_ROLES::contains);
 
         if (!hasAuthority) {
-            auditService.logSecurityEvent(actor, "RBAC_DENIED", "User attempted approval without ROLE_APPROVER");
-            throw new SecurityException("Access Denied: Missing required role");
+            String userRoles = auth.getAuthorities().stream().map(Object::toString).collect(Collectors.joining(","));
+            auditService.logSecurityEvent(actor, "RBAC_DENIED", "User with roles [" + userRoles + "] attempted approval.");
+            throw new SecurityException("Access Denied: User lacks one of the required roles: " + REQUIRED_ROLES);
         }
 
         // 2. Enforce Contextual Policy (e.g., Time of day, Location - simulated here)

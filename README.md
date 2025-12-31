@@ -57,8 +57,9 @@ Identity is treated as an external, authoritative system.
 *   **Clients**:
     *   `bielefeld-backoffice` – Banking Operations UI
     *   `batavia-backend` – Secure Banking Middleware
-*   **Roles**:
-    *   `ADMIN`
+*   **Roles**: // Conceptual roles managed by the IdP
+    *   `ADMIN` (Implies `ROLE_ADMIN`)
+    *   `SUPERVISOR` (Implies `ROLE_SUPERVISOR`)
     *   `AUDITOR`
     *   `SYSTEM`
 *   **Scopes**:
@@ -80,14 +81,14 @@ Identity is treated as an external, authoritative system.
 
 A high-risk endpoint to approve a financial transaction. This is the primary endpoint protected by the Z-Trust gateway.
 
-*   **Required Role**: `ROLE_APPROVER`
+*   **Required Role**: `ROLE_ADMIN` or `ROLE_SUPERVISOR`
 *   **Request Parameter**: `transactionId={id}`
 *   **On Success (200 OK)**:
     *   Returns a confirmation message.
     *   Guarantees the action was audited and executed.
 *   **On Failure**:
     *   `401 Unauthorized`: If no token is provided.
-    *   `403 Forbidden`: If the token lacks the `ROLE_APPROVER` role.
+    *   `403 Forbidden`: If the token lacks the required `ROLE_ADMIN` or `ROLE_SUPERVISOR` role.
 
 This endpoint exists to demonstrate the complete Zero-Trust flow: **Authenticate -> Authorize -> Audit -> Execute**.
 

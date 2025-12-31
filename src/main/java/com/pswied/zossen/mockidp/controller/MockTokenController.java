@@ -25,7 +25,9 @@ public class MockTokenController {
         // Simulate role assignment based on username
         List<String> roles;
         if ("admin".equals(username)) {
-            roles = List.of("ROLE_ADMIN", "ROLE_APPROVER");
+            roles = List.of("ROLE_ADMIN");
+        } else if ("supervisor".equals(username)) {
+            roles = List.of("ROLE_SUPERVISOR");
         } else {
             roles = List.of("ROLE_USER");
         }

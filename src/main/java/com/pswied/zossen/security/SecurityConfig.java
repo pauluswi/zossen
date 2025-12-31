@@ -31,6 +31,20 @@ public class SecurityConfig {
                 .jwt(jwt -> jwt
                     .jwtAuthenticationConverter(jwtAuthenticationConverter())
                 )
+            )
+            // Add standard security headers
+            .headers(headers -> headers
+                // Prevents clickjacking
+                .frameOptions(frameOptions -> frameOptions.sameOrigin())
+                // Enforces HTTPS
+                .httpStrictTransportSecurity(hsts -> hsts
+                    .includeSubDomains(true)
+                    .maxAgeInSeconds(31536000)
+                )
+                // Sets a basic Content Security Policy
+                .contentSecurityPolicy(csp -> csp
+                    .policyDirectives("script-src 'self'; object-src 'none';")
+                )
             );
 
         return http.build();

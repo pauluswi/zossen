@@ -74,19 +74,22 @@ Identity is treated as an external, authoritative system.
     *   Scope
     *   Token claims
 
-## 🔁 Sample API
+## 🔁 Sample API Endpoint
 
-### `POST /transfer`
+### `POST /backoffice/approve`
 
-Simulated fund transfer endpoint.
+A high-risk endpoint to approve a financial transaction. This is the primary endpoint protected by the Z-Trust gateway.
 
-*   **Required Scope**: `txn.create`
-*   **Response Includes**:
-    *   Correlation ID
-    *   Security context
-    *   Immutable audit reference
+*   **Required Role**: `ROLE_APPROVER`
+*   **Request Parameter**: `transactionId={id}`
+*   **On Success (200 OK)**:
+    *   Returns a confirmation message.
+    *   Guarantees the action was audited and executed.
+*   **On Failure**:
+    *   `401 Unauthorized`: If no token is provided.
+    *   `403 Forbidden`: If the token lacks the `ROLE_APPROVER` role.
 
-This endpoint exists to demonstrate security enforcement, not business complexity.
+This endpoint exists to demonstrate the complete Zero-Trust flow: **Authenticate -> Authorize -> Audit -> Execute**.
 
 ## 📘 Security Controls Demonstrated
 

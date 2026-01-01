@@ -51,14 +51,22 @@ The `-i` flag in the `curl` command tells it to include the HTTP response header
 #### Expected Output Sample
 
 ```
-HTTP/1.1 200 OK
-Strict-Transport-Security: max-age=31536000; includeSubDomains
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
 X-Frame-Options: SAMEORIGIN
 Content-Security-Policy: script-src 'self'; object-src 'none';
 Content-Type: application/json
-...
+Transfer-Encoding: chunked
+Date: Wed, 31 Dec 2025 06:48:54 GMT
 
-{"status":"SUCCESS","message":"Transaction approved and executed securely","transactionId":"025093000001"}
+{"transactionId":"025093000001","status":"SUCCESS","message":"Transaction approved and executed securely"}
 ```
 
 #### Explanation

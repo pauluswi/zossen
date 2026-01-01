@@ -22,11 +22,9 @@ interface LoginProps {
 
 export default function Login({ onLoginSuccess }: LoginProps) {
   // In our Mock IdP, the username determines the role.
-  // admin -> ROLE_ADMIN
   // supervisor -> ROLE_SUPERVISOR
   // auditor -> ROLE_AUDITOR (Conceptual)
-  // user -> ROLE_USER
-  const [username, setUsername] = React.useState('admin');
+  const [username, setUsername] = React.useState('supervisor');
   const [error, setError] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState(false);
 
@@ -65,7 +63,7 @@ export default function Login({ onLoginSuccess }: LoginProps) {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Zossen Backoffice Login
+            Backoffice Banking Operations
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '100%' }}>
 
@@ -78,10 +76,8 @@ export default function Login({ onLoginSuccess }: LoginProps) {
                 label="Select User (Simulates Role)"
                 onChange={(e) => setUsername(e.target.value as string)}
               >
-                <MenuItem value="admin">Admin (Has ROLE_ADMIN)</MenuItem>
                 <MenuItem value="supervisor">Supervisor (Has ROLE_SUPERVISOR)</MenuItem>
                 <MenuItem value="auditor">Auditor (Has ROLE_AUDITOR)</MenuItem>
-                <MenuItem value="user">User (No Permissions)</MenuItem>
               </Select>
             </FormControl>
 

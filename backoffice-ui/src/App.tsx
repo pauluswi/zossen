@@ -51,7 +51,7 @@ function App() {
         <div className="flex items-center gap-3">
           <Shield className="w-10 h-10 text-blue-600" />
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Bielefeld Backoffice</h1>
+            <h1 className="text-3xl font-bold text-gray-900">Backoffice Banking Operations</h1>
             <p className="text-gray-500">Zero-Trust Transaction Approval Portal</p>
           </div>
         </div>

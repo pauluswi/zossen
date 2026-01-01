@@ -45,7 +45,7 @@ First, simulate the role of an operational supervisor who needs to approve a hig
 1.  Select **Supervisor** from the dropdown menu.
 2.  Click **Sign In**.
 
-![Login Page](./screenshots/login_spv.png)
+![Login Page](../screenshots/login_spv.png)
 ---
 
 ### Step 2: Approve a Transaction
@@ -56,7 +56,7 @@ As the Supervisor, you are presented with a list of pending approvals.
 2.  The row will disappear from the list, and a success notification will appear. In the background, this action has been securely logged by the Z-Trust audit engine.
 3.  **Logout** using the button in the top-right corner.
 
-![Approvals](./screenshots/approvals.png)
+![Approvals](../screenshots/approvals.png)
 ---
 
 ### Step 3: Login as Auditor
@@ -67,7 +67,7 @@ Now, switch roles to an independent auditor who needs to review all system activ
 2.  Click **Sign In**.
 
 ---
-![Login Page](./screenshots/login_auditor.png)
+![Login Page](../screenshots/login_auditor.png)
 
 ### Step 4: Review the Audit Trail
 
@@ -76,10 +76,10 @@ As the Auditor, you are presented with the immutable Audit Trail.
 1.  You will see a list of all system events, including the transaction you just approved as the Supervisor. The risk level is automatically classified (e.g., `INFO`).
 2.  The list is pre-populated with **CRITICAL** and **WARNING** events to demonstrate risk classification.
 
-![Audit Trail](./screenshots/audit-trail.png)
+![Audit Trail](../screenshots/audit-trail.png)
 
 3.  Click on any row to open a details panel, which includes the **cryptographic hash chain**, proving the log's integrity.
 
-![Audit Trail](./screenshots/audit-trail-detail.png)
+![Audit Trail](../screenshots/audit-trail-detail.png)
 
 This flow demonstrates the core principle of Zero-Trust: every privileged action is authenticated, authorized, and immutably recorded for independent review.

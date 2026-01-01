@@ -2,7 +2,21 @@
 
 > A security-focused showcase for distributed banking systems, demonstrating Zero-Trust architecture, role-based access, and immutable audit trails.
 
-This project illustrates how modern financial systems can be secured by explicit verification and strong identity boundaries, rather than relying on implicit network trust.
+---
+
+## Professional Summary 
+
+This project is a technical showcase demonstrating a **Zero-Trust security architecture** for banking middleware, designed with principles relevant to the financial sector in mind.
+
+The architecture emphasizes **traceability, immutability, and explicit verification**, aligning with the expectations of regulatory bodies like **BaFin** and standards such as **MaRisk** and **BAIT**.
+
+**Key features demonstrated:**
+*   **Immutable, Hash-Chained Audit Trail**: An audit log designed to be tamper-evident, a core requirement for compliance.
+*   **Automated Risk Classification**: Events are automatically classified (`INFO`, `WARNING`, `CRITICAL`), enabling focused regulatory reporting.
+*   **Strict Role-Based Access Control (RBAC)**: A clear separation of duties is enforced between operational roles (e.g., `Supervisor`) and oversight roles (e.g., `Auditor`).
+*   **Secure, Decoupled Architecture**: The system is built with decoupled microservices (Java/Spring Boot) and a modern frontend (React), communicating via secure, token-based APIs.
+
+This showcase serves as a practical example of how to build secure, compliant, and modern banking systems.
 
 ---
 

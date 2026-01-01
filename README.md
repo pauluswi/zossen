@@ -10,12 +10,16 @@ This project illustrates how modern financial systems can be secured by explicit
 
 This README serves as the central hub for all project documentation.
 
+### 📄 Project Overview
+
+- **[Z-Trust Platform Overview](docs/Z-TRUST.md)**: A detailed overview of the project's goals, principles, and security features.
+
 ### 🏛️ Core Architecture & Design
 
 High-level diagrams and specifications that define the system's structure and behavior.
 
-- **[High Level Architecture Diagram](docs/HIGH_LEVEL_ARCH.md)**: Visual overview of all system components and their interactions.
-- **[Authentication Flow](docs/AUTH_FLOW.md)**: Step-by-step diagram of the user authentication and token flow.
+- **[Architecture Diagram](docs/Arch.md)**: Visual overview of all system components and their interactions.
+- **[Authentication Flow](docs/AUTH-FLOW.md)**: Step-by-step diagram of the user authentication and token flow.
 - **[Audit & Risk Event Specification](docs/AUDIT_RISK_EVENT.md)**: The detailed design document for the BaFin-style audit and risk engine.
 
 ### 📦 Components

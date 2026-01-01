@@ -37,7 +37,6 @@ import Divider from '@mui/material/Divider';
 import { alpha } from '@mui/material/styles';
 import { visuallyHidden } from '@mui/utils';
 import axios from 'axios';
-import { AuditLogEntry } from './AuditTrail';
 
 // Mock Data (In a real app, this would come from GET /backoffice/approvals)
 const MOCK_APPROVALS = [
@@ -101,10 +100,9 @@ interface ApprovalsProps {
   token: string;
   currentUser: string;
   onLog: (msg: string, type: 'info' | 'success' | 'error' | 'warning') => void;
-  onAudit: (log: AuditLogEntry) => void;
 }
 
-export default function Approvals({ token, currentUser, onLog, onAudit }: ApprovalsProps) {
+export default function Approvals({ token, currentUser, onLog }: ApprovalsProps) {
   const [approvals, setApprovals] = React.useState(MOCK_APPROVALS);
   const [selected, setSelected] = React.useState<readonly number[]>([]);
 
@@ -193,40 +191,10 @@ export default function Approvals({ token, currentUser, onLog, onAudit }: Approv
         { headers: { Authorization: `Bearer ${token}` } }
       );
       onLog(`✅ Transaction ${transactionId} approved.`, 'success');
-
-      // Add to Audit Trail
-      onAudit({
-        id: Date.now(),
-        timestamp: new Date().toISOString(),
-        userId: currentUser,
-        role: 'SUPERVISOR',
-        action: 'APPROVE',
-        entityType: type,
-        entityRef: transactionId,
-        result: 'SUCCESS',
-        channel: 'WEB',
-        ipAddress: '192.168.1.10', // Simulated
-        snapshot: { after: { status: 'APPROVED' } }
-      });
-
       return true;
     } catch (err: any) {
       if (err.response && err.response.status === 403) {
         onLog(`⛔ Access Denied for ${transactionId}. Missing Role.`, 'error');
-        // Log failure to audit trail too
-        onAudit({
-            id: Date.now(),
-            timestamp: new Date().toISOString(),
-            userId: currentUser,
-            role: 'USER', // Assuming user role if failed
-            action: 'APPROVE',
-            entityType: type,
-            entityRef: transactionId,
-            result: 'FAILED',
-            channel: 'WEB',
-            ipAddress: '192.168.1.10',
-            snapshot: { error: 'Access Denied' }
-        });
       } else {
         onLog(`❌ Error approving ${transactionId}: ${err.message}`, 'error');
       }

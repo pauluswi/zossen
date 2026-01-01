@@ -14,6 +14,10 @@ export default defineConfig({
       '/backoffice': {
         target: 'http://localhost:8080',
         changeOrigin: true,
+      },
+      '/ztrust': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
       }
     }
   }

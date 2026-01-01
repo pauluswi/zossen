@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Shield, LogOut } from 'lucide-react'
 import Login from './Login'
 import Approvals from './Approvals'
-import AuditTrail, { AuditLogEntry } from './AuditTrail'
+import AuditTrail from './AuditTrail'
 
 interface LogEntry {
   msg: string;
@@ -14,14 +14,9 @@ function App() {
   const [token, setToken] = useState<string | null>(null)
   const [currentUser, setCurrentUser] = useState<string | null>(null)
   const [logs, setLogs] = useState<LogEntry[]>([])
-  const [auditHistory, setAuditHistory] = useState<AuditLogEntry[]>([])
 
   const addLog = (msg: string, type: 'info' | 'success' | 'error' | 'warning' = 'info') => {
     setLogs(prev => [{ msg, type, time: new Date().toLocaleTimeString() }, ...prev])
-  }
-
-  const addAuditLog = (log: AuditLogEntry) => {
-    setAuditHistory(prev => [log, ...prev])
   }
 
   const handleLoginSuccess = (newToken: string, username: string) => {
@@ -72,13 +67,12 @@ function App() {
         {/* Main Content: Approvals Table OR Audit Trail */}
         <div className="lg:col-span-3">
           {isAuditor ? (
-            <AuditTrail logs={auditHistory} />
+            <AuditTrail token={token} />
           ) : (
             <Approvals
               token={token}
               currentUser={currentUser || 'unknown'}
               onLog={addLog}
-              onAudit={addAuditLog}
             />
           )}
         </div>

@@ -42,11 +42,11 @@ Detailed documentation for each major component of the application.
 
 #### Backend Modules (Java / Spring Boot)
 
-- **[Backoffice Module](src/main/java/com/pswied/zossen/backoffice/README.md)**: Handles business logic and delegates to Z-Trust.
-- **[Security Module](src/main/java/com/pswied/zossen/security/README.md)**: Manages JWT validation and identity extraction.
-- **[Z-Trust Gateway](src/main/java/com/pswied/zossen/ztrust/gateway/README.md)**: The core Policy Enforcement Point.
-- **[Z-Trust Audit Module](src/main/java/com/pswied/zossen/ztrust/audit/README.md)**: The immutable, hash-chained audit log engine.
-- **[Z-Trust Transaction Module](src/main/java/com/pswied/zossen/ztrust/transaction/README.md)**: The secure execution layer for financial operations.
+- **[Backoffice Module](backend/src/main/java/com/pswied/zossen/backoffice/README.md)**: Handles business logic and delegates to Z-Trust.
+- **[Security Module](backend/src/main/java/com/pswied/zossen/security/README.md)**: Manages JWT validation and identity extraction.
+- **[Z-Trust Gateway](backend/src/main/java/com/pswied/zossen/ztrust/gateway/README.md)**: The core Policy Enforcement Point.
+- **[Z-Trust Audit Module](backend/src/main/java/com/pswied/zossen/ztrust/audit/README.md)**: The immutable, hash-chained audit log engine.
+- **[Z-Trust Transaction Module](backend/src/main/java/com/pswied/zossen/ztrust/transaction/README.md)**: The secure execution layer for financial operations.
 
 #### Frontend UI (React / Material UI)
 

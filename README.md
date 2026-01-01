@@ -1,136 +1,39 @@
 # 🏦 Zossen - Zero-Trust Banking Platform
 
-> Zero-Trust Security Showcase for Distributed Banking Systems
+> A security-focused showcase for distributed banking systems, demonstrating Zero-Trust architecture, role-based access, and immutable audit trails.
 
-## 📌 Overview
+This project illustrates how modern financial systems can be secured by explicit verification and strong identity boundaries, rather than relying on implicit network trust.
 
-**Z-Trust** is a security-focused banking middleware platform designed to demonstrate Zero-Trust architecture principles in a distributed banking environment.
+---
 
-The project illustrates how modern financial systems can be secured by explicit verification, strong identity boundaries, and defense-in-depth, rather than relying on network trust.
+## 📚 Project Documentation
 
-This showcase focuses on architecture and security patterns, not business feature completeness.
+This README serves as the central hub for all project documentation.
 
-## 🎯 Purpose
+### 🏛️ Core Architecture & Design
 
-This is a personal technical showcase created for:
-*   Architecture discussions
-*   Security design reviews
-*   Senior engineering / solution architect portfolios
+High-level diagrams and specifications that define the system's structure and behavior.
 
-It does not represent a production banking system and contains no proprietary data or logic.
+- **[High Level Architecture Diagram](docs/HIGH_LEVEL_ARCH.md)**: Visual overview of all system components and their interactions.
+- **[Authentication Flow](docs/AUTH_FLOW.md)**: Step-by-step diagram of the user authentication and token flow.
+- **[Audit & Risk Event Specification](docs/AUDIT_RISK_EVENT.md)**: The detailed design document for the BaFin-style audit and risk engine.
 
-## 🎯 Project Goals
+### 📦 Components
 
-*   Demonstrate Zero-Trust architecture in a banking context
-*   Showcase realistic security controls used in financial institutions
-*   Clearly separate:
-    *   Identity
-    *   Security enforcement
-    *   Business logic
-*   Provide a Backoffice UI for:
-    *   Security monitoring
-    *   Audit inspection
-*   Serve as a portfolio artifact for senior engineering and architecture roles
+Detailed documentation for each major component of the application.
 
-## 🔐 Zero-Trust Principles Applied
+#### Backend Modules (Java / Spring Boot)
 
-| Principle | Implementation |
-| :--- | :--- |
-| **Never Trust, Always Verify** | OAuth2 + JWT validation on every request |
-| **Identity First** | External Identity Provider (Keycloak) |
-| **Least Privilege** | Scope-based RBAC |
-| **Secure Service Communication** | Mutual TLS (mTLS) between microservices |
-| **Observability & Auditability** | Centralized, immutable audit logs |
-| **Assume Breach** | Correlation IDs, replay protection |
+- **[Backoffice Module](src/main/java/com/pswied/zossen/backoffice/README.md)**: Handles business logic and delegates to Z-Trust.
+- **[Security Module](src/main/java/com/pswied/zossen/security/README.md)**: Manages JWT validation and identity extraction.
+- **[Z-Trust Gateway](src/main/java/com/pswied/zossen/ztrust/gateway/README.md)**: The core Policy Enforcement Point.
+- **[Z-Trust Audit Module](src/main/java/com/pswied/zossen/ztrust/audit/README.md)**: The immutable, hash-chained audit log engine.
+- **[Z-Trust Transaction Module](src/main/java/com/pswied/zossen/ztrust/transaction/README.md)**: The secure execution layer for financial operations.
 
-## 🔑 Identity & Access Management
+#### Frontend UI (React / Material UI)
 
-### Why an External Identity Provider?
+- **[Backoffice UI Guide](backoffice-ui/README.md)**: Instructions for running the frontend and a detailed walkthrough of the user flow with screenshots.
 
-Keycloak is used to demonstrate enterprise-grade IAM separation.
-The goal of this project is to show Zero-Trust system design, not to reimplement identity management logic inside the application.
-Identity is treated as an external, authoritative system.
+### 🧪 Testing
 
-### OAuth2 Configuration (Conceptual)
-
-*   **Realm**: `z-trust`
-*   **Clients**:
-    *   `bielefeld-backoffice` – Banking Operations UI
-    *   `batavia-backend` – Secure Banking Middleware
-*   **Roles**: // Conceptual roles managed by the IdP
-    *   `ADMIN` (Implies `ROLE_ADMIN`)
-    *   `SUPERVISOR` (Implies `ROLE_SUPERVISOR`)
-    *   `AUDITOR`
-    *   `SYSTEM`
-*   **Scopes**:
-    *   `txn.create`
-
-### Token Usage
-
-*   JWT validated at the API Gateway
-*   Claims propagated to downstream services
-*   No shared secrets between services
-*   Authorization decisions based on:
-    *   Role
-    *   Scope
-    *   Token claims
-
-## 🔁 Sample API Endpoint
-
-### `POST /backoffice/approve`
-
-A high-risk endpoint to approve a financial transaction. This is the primary endpoint protected by the Z-Trust gateway.
-
-*   **Required Role**: `ROLE_ADMIN` or `ROLE_SUPERVISOR`
-*   **Request Parameter**: `transactionId={id}`
-*   **On Success (200 OK)**:
-    *   Returns a confirmation message.
-    *   Guarantees the action was audited and executed.
-*   **On Failure**:
-    *   `401 Unauthorized`: If no token is provided.
-    *   `403 Forbidden`: If the token lacks the required `ROLE_ADMIN` or `ROLE_SUPERVISOR` role.
-
-This endpoint exists to demonstrate the complete Zero-Trust flow: **Authenticate -> Authorize -> Audit -> Execute**.
-
-## 📘 Security Controls Demonstrated
-
-*   OAuth2 / JWT validation
-*   Mutual TLS (service-to-service)
-*   Role-Based Access Control (RBAC)
-*   Rate limiting at API Gateway
-*   Replay attack prevention (timestamp + request ID)
-*   Secure HTTP headers
-*   Centralized, immutable audit logging
-*   Distributed tracing & correlation IDs
-
-## 📜 Compliance Alignment (Conceptual)
-
-| Regulation / Standard | Coverage |
-| :--- | :--- |
-| **PSD2** | Strong authentication, auditability |
-| **ISO 27001** | Access control, logging |
-| **OWASP ASVS** | API security controls |
-| **BaFin IT Guidelines** | Secure system boundaries |
-
-> ⚠️ **Note:** Compliance mapping is illustrative only and does not represent any certification claim.
-
-## ⚠️ Important Disclaimer
-
-This project is:
-*   A personal technical showcase
-*   Built entirely with synthetic data
-*   Designed to demonstrate architecture and security patterns
-
-It does not:
-*   Represent a real banking system
-*   Use proprietary business logic
-*   Claim regulatory or compliance certification
-
-## 🚀 Why This Project Matters
-
-This project demonstrates:
-*   Security-first system design
-*   Practical Zero-Trust implementation
-*   Strong banking domain awareness
-*   Clear architectural decision-making
-*   Realistic enterprise security patterns
+- **[API Testing Guide (cURL)](docs/API_TESTING.md)**: A guide with `curl` commands for manually testing the security of the backend API.

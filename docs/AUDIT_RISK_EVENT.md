@@ -1,28 +1,27 @@
-# 🏦 Banking Audit & Risk Event
-**BaFin-Style Audit, Risk Classification and Regulatory Reporting**
+# 🏦 Banking Audit & Risk Event Engine: Design & Implementation
+
+**BaFin-Style Audit, Risk Classification, and Regulatory Concepts**
 
 ---
 
 ## 📌 Overview
 
-The **Banking Audit & Risk Event** is a standalone audit microservice designed to collect, classify, store, and report security- and transaction-related events in a **traceable and audit-ready** manner.
+This document outlines the design for a **Banking Audit & Risk Event Engine**. It describes a system designed to collect, classify, and store security- and transaction-related events in a traceable and audit-ready manner, aligned with principles common in the German financial sector.
 
-The platform demonstrates how typical **German banking and regulatory expectations** (e.g. BaFin, MaRisk, BAIT) can be implemented from a technical architecture perspective.
+The Zossen project implements a simplified, **embedded version** of this design directly within the main backend application, demonstrating the core principles in a practical showcase.
 
 ---
 
 ## 🎯 Purpose
 
-This project is intended to demonstrate:
+This design is intended to demonstrate:
 
-- Immutable audit logging
-- Deterministic risk classification
-- Technical audit controls
-- Regulatory-oriented reporting
-- Data retention and archiving concepts
+- Immutable audit logging via hash-chaining.
+- Deterministic, rule-based risk classification.
+- Technical audit controls for privileged actions.
+- Concepts for regulatory-oriented reporting and data retention.
 
-**Focus:** compliance-aware system design and architecture  
-**Out of scope:** business banking logic
+**Focus:** Compliance-aware system design and architecture.
 
 ---
 
@@ -39,7 +38,11 @@ The design follows principles commonly required in German financial institutions
 
 ---
 
-## 🧠 Architecture Overview
+## 🧠 Architecture
+
+### Conceptual Design: Standalone Microservice
+
+The ideal production architecture is a standalone microservice, fully decoupled from business applications.
 
 ```
 [ Banking Applications / APIs / Middleware ]
@@ -55,202 +58,121 @@ The design follows principles commonly required in German financial institutions
    Immutable Audit Database
 ```
 
-### Architectural Principles
+### Implemented Design: Embedded Engine
 
-- Append-only data storage
-- Strict separation of business data and audit data
-- Event-driven processing
-- Clear technical and organizational controls
+For this showcase, the core components are embedded within the Zossen backend to simplify deployment while still demonstrating the key architectural patterns.
+
+```
+Zossen Backend
++--------------------------------------------------+
+|                                                  |
+|  [ Z-Trust Gateway ] ----> [ AuditService ]      |
+|                                |                 |
+|                                v                 |
+|                          [ RiskClassifier ]      |
+|                                |                 |
+|                                v                 |
+|                          [ EventStore (In-Memory)] |
+|                                |                 |
++--------------------------------------------------+
+```
 
 ---
 
-## ✨ Key Features
+## ✨ Key Features Implemented
 
 ### 1️⃣ Immutable Audit Trail
 
-- No UPDATE or DELETE operations
-- Events are stored as append-only records
-- Corrections are handled via compensating events
-- Optional hash chaining for tamper detection
+- **Hash Chaining**: Each event is cryptographically linked to the previous one using a SHA-256 hash. The hash of a new event is calculated using its own data plus the hash of the prior event, creating a tamper-evident chain.
+- **In-Memory Storage**: For this showcase, events are stored in a synchronized, in-memory list, simulating an append-only database.
+- **No Updates/Deletes**: The `AuditService` only provides methods to add events, not to modify or remove them.
 
-**Objective:** technical immutability aligned with audit requirements
+**Objective:** Demonstrate technical immutability aligned with audit requirements.
 
 ---
 
 ### 2️⃣ Event and Risk Classification
 
-Each incoming event is automatically classified:
+Each event is automatically classified by the `RiskClassifier` component based on predefined rules.
 
-| Risk Level | Description |
-|----------|------------|
-| INFO | Normal operational activity |
-| WARNING | Suspicious or abnormal behavior |
-| CRITICAL | Regulatory or security-relevant incident |
-
-**Examples**
-
-- INFO → Balance inquiry
-- WARNING → Multiple failed login attempts
-- CRITICAL → Unauthorized transaction execution
+| Risk Level | Description & Examples |
+|------------|------------------------|
+| **INFO** | Normal operational activity (e.g., `LOGIN_SUCCESS`, `EXECUTE_APPROVAL`). |
+| **WARNING** | Abnormal behavior or operational failures (e.g., a transaction failing due to a downstream error). |
+| **CRITICAL** | Security-relevant incidents or policy violations (e.g., `RBAC_DENIED` when a user tries to perform an action without the required role). |
 
 Classification is rule-based and fully auditable.
 
 ---
 
-### 3️⃣ Audit and Regulatory Reporting
+## 🔐 Security Model (Implemented)
 
-#### 📄 CSV Export
-- Intended for auditors and supervisory authorities
-- Structured, filterable datasets
-
-#### 📄 PDF Mock Reports
-- Intended for management and compliance teams
-- Contains:
-    - Reporting period
-    - Risk overview
-    - List of critical events
-    - Applied control measures
-
----
-
-### 4️⃣ Retention and Archiving Concept
-
-Simulation of regulatory data retention periods:
-
-| Risk Level | Retention Period |
-|----------|------------------|
-| INFO | 2 years |
-| WARNING | 5 years |
-| CRITICAL | 10 years |
-
-- No physical deletion
-- State transitions only: `ACTIVE → ARCHIVED → EXPIRED`
-- Access restriction instead of data removal
-
----
-
-## 🔐 Security Model
-
-- OAuth2 / OpenID Connect
-- Mutual TLS (mTLS) between services
-- Role-based access control (RBAC)
-
-### Roles
+Access to audit data is protected by the same Zero-Trust security layer as the rest of the application.
 
 | Role | Permission |
-|----|-----------|
-| SYSTEM | Create audit events |
-| AUDITOR | Read-only access |
-| COMPLIANCE | Reporting and export |
-
-> The audit service also records access to its own APIs.
+|------------|------------------------------------------------|
+| `SUPERVISOR` | Can perform actions that **generate** audit events. |
+| `AUDITOR` | Can **read** the audit trail via the API. |
 
 ---
 
-## 📡 API Overview
+## 📡 API Overview (Implemented)
 
-### Create Audit Event
+### Query Audit Events
+
+Provides read-only access to the immutable event store. This is used by the `AuditTrail` page in the frontend.
+
 ```http
-POST /audit/events
+GET /ztrust/audit/logs
 ```
+- **Authentication**: Requires a valid JWT.
+- **Authorization**: Conceptually, this endpoint should be restricted to users with the `ROLE_AUDITOR`. (This is enforced by the frontend's role-based view rendering).
 
-```json
-{
-  "sourceSystem": "PAYMENT-SERVICE",
-  "eventType": "TRANSFER_EXECUTED",
-  "actor": "system",
-  "entityId": "TX-2025-0001",
-  "details": {
-    "amount": 5000,
-    "currency": "EUR"
-  }
+---
+
+## 🗄️ Data Model (Implemented)
+
+The `AuditEvent.java` class represents the core data structure.
+
+```java
+class AuditEvent {
+    String id;
+    Instant timestamp;
+    String actor;
+    String action;
+    String resourceId;
+    String result;
+    String details;
+    RiskLevel riskLevel;
+    String hash;          // SHA-256 hash of this event + previousHash
+    String previousHash;  // The hash of the preceding event in the chain
 }
 ```
 
 ---
 
-### Query Audit Events
-```http
-GET /audit/events?riskLevel=CRITICAL&period=2025-Q1
-```
+## 🧪 Example Scenarios in this Showcase
+
+1.  A `user` without permission attempts an approval -> A **CRITICAL** `RBAC_DENIED` event is logged.
+2.  A `supervisor` successfully approves a transaction -> An **INFO** `EXECUTE_APPROVAL` event is logged.
+3.  An `auditor` logs in and views the complete, hash-chained log, verifying the integrity of all previous events.
 
 ---
 
-### Export Audit Data
-```http
-GET /audit/export?format=csv&period=2025-Q1
-```
+## 🚀 Conceptual Features (Future Work)
 
----
+The following features from the original design are not implemented in this showcase but represent the next logical steps for a production system.
 
-## 🗄️ Data Model (Excerpt)
+### 1. Regulatory Reporting
+- **CSV Export**: An endpoint (`GET /audit/export?format=csv`) to generate structured reports for auditors.
+- **PDF Mock Reports**: A feature to generate human-readable summaries for management.
 
-```
-AuditEvent
----------
-event_id (UUID)
-timestamp
-source_system
-actor
-event_type
-risk_level
-payload (JSON)
-hash
-previous_hash
-retention_state
-```
-
-**Hash chaining rationale**
-
-- Detects tampering attempts
-- Increases audit reliability
-- Easy to explain to auditors and regulators
-
----
-
-## 🧰 Technology Stack
-
-- Java 17
-- Spring Boot
-- PostgreSQL (append-only schema)
-- Flyway (schema versioning)
-- OpenAPI
-- Docker
-
-Optional components:
-- Kafka (event ingestion)
-- Object storage (archival data)
-
----
-
-## 🧪 Example Scenarios
-
-1. Multiple failed logins → WARNING
-2. Unauthorized API access → CRITICAL
-3. Quarterly audit export
-4. Retention job archives expired INFO events
-5. Integrity check detects data manipulation attempt
-
----
-
-## 🧭 Intended Audience
-
-- Banks and savings banks
-- BaFin-regulated FinTechs
-- IT audit and compliance teams
-- Financial services software architects
+### 2. Retention and Archiving
+- A background job to transition events from `ACTIVE` to `ARCHIVED` state based on their risk level and age.
+- Storing archived data in a cheaper, long-term object store (like Amazon S3).
 
 ---
 
 ## ⚠️ Disclaimer
 
-This project is provided **for demonstration and educational purposes only**  
-and does **not** represent a production-ready compliance solution.
-
----
-
-## 👤 Author
-
-**Slamet Widodo**  
-Senior Software Engineer – Banking & Middleware  
-Focus areas: Java, Microservices, Security, Banking Compliance
+This project is provided **for demonstration and educational purposes only** and does **not** represent a production-ready compliance solution.

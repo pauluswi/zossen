@@ -1,10 +1,17 @@
 # 🏦 Zossen - Zero-Trust Banking Platform
 
+![Java](https://img.shields.io/badge/Java-17-orange?style=for-the-badge&logo=java)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2-brightgreen?style=for-the-badge&logo=springboot)
+![React](https://img.shields.io/badge/React-18-blue?style=for-the-badge&logo=react)
+![Vite](https://img.shields.io/badge/Vite-5.0-purple?style=for-the-badge&logo=vite)
+![Security](https://img.shields.io/badge/Security-Zero%20Trust-red?style=for-the-badge&logo=security)
+![Audit](https://img.shields.io/badge/Audit-Immutable-darkgreen?style=for-the-badge&logo=logstash)
+
 > A security-focused showcase for distributed banking systems, demonstrating Zero-Trust architecture, role-based access, and immutable audit trails.
 
 ---
 
-## Professional Summary 
+## 🏛️ Regulatory & Compliance Architecture
 
 This project is a technical showcase demonstrating a **Zero-Trust security architecture** for banking middleware, designed with principles relevant to the financial sector in mind.
 

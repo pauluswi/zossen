@@ -25,7 +25,8 @@ public class AuditService {
     
     // In-memory storage for demonstration. In prod, this would be a database.
     private final List<AuditEvent> eventStore = Collections.synchronizedList(new ArrayList<>());
-    private String lastHash = "0000000000000000000000000000000000000000000000000000000000000000"; // Genesis hash
+    private static final String GENESIS_HASH = "0000000000000000000000000000000000000000000000000000000000000000";
+    private String lastHash = GENESIS_HASH;
 
     public AuditService(RiskClassifier riskClassifier) {
         this.riskClassifier = riskClassifier;
@@ -97,5 +98,34 @@ public class AuditService {
 
     public List<AuditEvent> getAuditLogs() {
         return new ArrayList<>(eventStore); // Return copy
+    }
+
+    /**
+     * Verifies the integrity of the entire audit chain.
+     * @return true if the chain is valid, false otherwise.
+     */
+    public boolean verifyChain() {
+        String previousHash = GENESIS_HASH;
+        for (AuditEvent event : eventStore) {
+            // Check if the previous hash matches the one stored in the current event
+            if (!event.getPreviousHash().equals(previousHash)) {
+                logger.error("Chain tamper detected! Event ID: {}. Expected previous hash: {}, but got: {}",
+                        event.getId(), previousHash, event.getPreviousHash());
+                return false;
+            }
+
+            // Recalculate the hash of the current event and check if it matches the stored hash
+            String recalculatedHash = calculateHash(event);
+            if (!event.getHash().equals(recalculatedHash)) {
+                logger.error("Chain tamper detected! Event ID: {}. Hash mismatch. Stored: {}, Recalculated: {}",
+                        event.getId(), event.getHash(), recalculatedHash);
+                return false;
+            }
+
+            // Move to the next link in the chain
+            previousHash = event.getHash();
+        }
+        logger.info("Audit chain verification successful. No tampering detected.");
+        return true;
     }
 }

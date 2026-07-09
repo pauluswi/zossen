@@ -42,6 +42,7 @@ High-level diagrams and specifications that define the system's structure and be
 - **[arc42 Architecture Documentation](docs/architecture/arc42.md)**: Comprehensive architecture documentation following the arc42 template.
 - **[Architecture Decision Records (ADRs)](docs/architecture/ADR/)**: Documented architectural decisions and their rationale.
 - **[Architectural Trade-Offs](docs/architecture/TRADE-OFF.md)**: Summary of key architectural trade-offs made.
+- **[European Standards and Regulatory Alignment](docs/EUROPEAN_STANDARDS.md)**: Details on how the project aligns with European financial regulations and information security standards.
 - **[Architecture Diagram](docs/Arch.md)**: Visual overview of all system components and their interactions.
 - **[Authentication Flow](docs/AUTH-FLOW.md)**: Step-by-step diagram of the user authentication and token flow.
 - **[Audit & Risk Event Specification](docs/AUDIT_RISK_EVENT.md)**: The detailed design document for the BaFin-style audit and risk engine.

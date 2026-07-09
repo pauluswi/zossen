@@ -102,7 +102,7 @@ interface ApprovalsProps {
   onLog: (msg: string, type: 'info' | 'success' | 'error' | 'warning') => void;
 }
 
-export default function Approvals({ token, currentUser, onLog }: ApprovalsProps) {
+export default function Approvals({ token, onLog }: ApprovalsProps) {
   const [approvals, setApprovals] = React.useState(MOCK_APPROVALS);
   const [selected, setSelected] = React.useState<readonly number[]>([]);
 
@@ -154,7 +154,7 @@ export default function Approvals({ token, currentUser, onLog }: ApprovalsProps)
     setSelected([]);
   };
 
-  const handleCheckboxClick = (event: React.MouseEvent<unknown>, id: number) => {
+  const handleCheckboxClick = (_event: React.MouseEvent<unknown>, id: number) => {
     const selectedIndex = selected.indexOf(id);
     let newSelected: readonly number[] = [];
 
@@ -182,7 +182,7 @@ export default function Approvals({ token, currentUser, onLog }: ApprovalsProps)
 
   // --- API Actions ---
 
-  const callApproveApi = async (transactionId: string, type: string) => {
+  const callApproveApi = async (transactionId: string, _type: string) => {
     try {
       onLog(`Approving transaction ${transactionId}...`, 'info');
       await axios.post(
@@ -277,7 +277,7 @@ export default function Approvals({ token, currentUser, onLog }: ApprovalsProps)
     setOrderBy(property);
   };
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
   };
 

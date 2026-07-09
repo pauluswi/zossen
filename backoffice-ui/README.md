@@ -67,8 +67,7 @@ Now, switch roles to an independent auditor who needs to review all system activ
 2.  Click **Sign In**.
 
 ---
-![Login Page](../screenshots/login_auditor.png)
-
+![Login Auditor](../screenshots/login_auditor.png)
 ### Step 4: Review the Audit Trail
 
 As the Auditor, you are presented with the immutable Audit Trail.
@@ -80,6 +79,6 @@ As the Auditor, you are presented with the immutable Audit Trail.
 
 3.  Click on any row to open a details panel, which includes the **cryptographic hash chain**, proving the log's integrity.
 
-![Audit Trail](../screenshots/audit-trail-detail.png)
+![Audit Trail Detail](../screenshots/audit-trail-detail.png)
 
 This flow demonstrates the core principle of Zero-Trust: every privileged action is authenticated, authorized, and immutably recorded for independent review.

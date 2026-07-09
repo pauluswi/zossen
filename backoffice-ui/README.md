@@ -75,7 +75,7 @@ As the Auditor, you are presented with the immutable Audit Trail.
 1.  You will see a list of all system events, including the transaction you just approved as the Supervisor. The risk level is automatically classified (e.g., `INFO`).
 2.  The list is pre-populated with **CRITICAL** and **WARNING** events to demonstrate risk classification.
 
-![Audit Trail](../screenshots/audit-trail.png)
+![Audit Trail Summary](../screenshots/audit-trail.png)
 
 3.  Click on any row to open a details panel, which includes the **cryptographic hash chain**, proving the log's integrity.
 
